@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CRUD_Сlients_API.Models.Client;
+using System.ComponentModel.DataAnnotations;
 
 namespace CRUD_Сlients_API.Models
 {
-    public class ClientResponseModel<T>
+    public class ClientResponseModel
     {
 
         public int limit { get; set; }
         public int page { get; set; }
         public int total { get; set; }
-        public T data { get; set; }
+        public ClientInfoModel[] data { get; set; }
     }
 }

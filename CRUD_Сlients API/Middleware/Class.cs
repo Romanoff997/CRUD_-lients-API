@@ -38,3 +38,4 @@ namespace CRUD_Сlients_API.Middleware
             return app;
         }
     }
+}

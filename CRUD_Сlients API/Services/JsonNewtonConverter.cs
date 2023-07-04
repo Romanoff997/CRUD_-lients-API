@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 
-namespace WebApplication2.Services
+namespace CRUD_Сlients_API.Services
 {
     public class JsonNewtonConverter: IJsonConverter
     {

@@ -8,7 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ClientErrorModel.cs" />
+    <Compile Remove="Models\ClientInfoViewModel.cs" />
+    <Compile Remove="Models\ClinetInfoModel.cs" />
+    <Compile Remove="Models\ErrorViewModel.cs" />
+    <Compile Remove="Models\ExceptionErrorModel.cs" />
+    <Compile Remove="Models\LivingAddressModel.cs" />
+    <Compile Remove="Models\PassportModel.cs" />
+    <Compile Remove="Models\RegAddressModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Client\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
   </ItemGroup>
 
 </Project>

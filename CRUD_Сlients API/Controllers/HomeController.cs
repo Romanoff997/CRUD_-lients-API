@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SimplifyLink.Models;
 using System.Diagnostics;
 
 namespace SimplifyLink.Controllers
@@ -15,15 +14,16 @@ namespace SimplifyLink.Controllers
 
         public IActionResult Index()
         {
-
-            return View();
+            
+            //return Redirect("Client/GetClients");
+            return Redirect("Client/CreateClient");
         }
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

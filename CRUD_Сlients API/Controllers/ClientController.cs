@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using CRUD_Сlients_API.Services;
+using CRUD_Сlients_API.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Runtime.CompilerServices;
+using CRUD_Сlients_API.Models.Client;
 
 namespace CRUD_Сlients_API.Controllers
 {
@@ -15,7 +12,8 @@ namespace CRUD_Сlients_API.Controllers
         //private readonly DataManager _dataManager;
         //private readonly IMapingService _mapper;
         //private readonly IShortUrlService _shorter;
-       private readonly IJsonConverter converter;
+        //private readonly IJsonConverter converter;
+        private readonly ClientApiService servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter() );
         public ClientController()
         {
             //_userManager = userManager;
@@ -26,56 +24,40 @@ namespace CRUD_Сlients_API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetClients()
+        public  Task GetClients()
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.PostAsJsonAsync(
-                @"https://localhost:3000/clients", );
-            response.EnsureSuccessStatusCode();
-
-            // return URI of the created resource.
-            //return response.Headers.Location;
-            //return response.Headers.Location;
-            //var userId = Guid.Parse(_userManager.GetUserId(User));
-            //IEnumerable<LinkModel> Links = await _dataManager.LinkRepository.GetLinksAsync(userId);
-            //IQueryable<LinkViewModel> LinksView = _mapper.GetLinkViews(Links.AsQueryable());//_mapper.Map<LinkViewModel>(Links); 
-            //List<LinkViewModel> mass = LinksView.ToList();
-            return View(LinksView);
-
-        }
-        [HttpPost]
-        public IActionResult Index(IQueryable<LinkViewModel> LinksView)
-        {
-            return View(LinksView);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddLink (IFormCollection form)
-        {
-            var userId = Guid.Parse(_userManager.GetUserId(User));
-            string longurl = form["message"];
-             string result = "";
-            await _shorter.GetShortUrl( (url) =>
-            {
-                 _dataManager.LinkRepository.AddLinkAsync(userId, longurl, url);
-                 //RedirectToAction("Index");
-            }, longurl);
-            //var aaf = CreateDynamicLink(df);
-            //_dataManager.LinkRepository.AddLink(userId, link.Url, link.MinUrl);
-            return RedirectToAction("Index");
-
+            servcie.GetClinets((Response<ClientResponseModel> result) => 
+            { 
+            
+            
+            }, new ClientRequestModel() );
+            return Task.CompletedTask;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> UpTiсket (IFormCollection form)
+        [HttpGet]
+        public  Task CreateClient()
         {
-            Guid id = Guid.Parse(form["IdLink"]);
-            var userId = Guid.Parse(_userManager.GetUserId(User));
-            if(id!=null)
-                await _dataManager.LinkRepository.UpTicketAsync(id);
+            servcie.CreateClient(() => 
+            { 
+            
+            
+            }, new ClientInfoModel() {
+                name = "тест",
+                surname = "family",
+                patronymic = " test",
+                dob = new DateTime(),
+                сhildren = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
+                passport =new PassportModel(),
+                livingAddress = new LivingAddressModel(),
+                regAddress = new RegAddressModel(),
+                jobs = new string[] { "job1", "job2" }
 
-            return RedirectToAction("Index");
-
+} );
+            return Task.CompletedTask;
         }
+   
+
+        
 
     }
 }
