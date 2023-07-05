@@ -20,7 +20,7 @@ namespace CRUD_Сlients_API.Models.Client
         public string? surname { get; set; }
         public string? patronymic { get; set; }
         public DateTime dob { get; set; }
-        public string[] сhildren { get; set; }
+        public string[] children { get; set; }
         //public string[]? documentIds { get; set; }
         public PassportModel passport { get; set; }
         public LivingAddressModel livingAddress { get; set; }

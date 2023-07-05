@@ -10,18 +10,15 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
-using Microsoft.AspNetCore.Components;
-using System.Net.Http.Json;
-using CRUD_Сlients_API.Models;
 using CRUD_Сlients_API.Models.Client;
 
 namespace CRUD_Сlients_API.Services
 {
     public class ClientApiService
-{
+    {
         private readonly HttpClient httpClient;
         private const string url = "https://localhost:7113/api/";
-        private readonly EventHandler <ErrorClientResponseModel> ErrorHandler;
+        private readonly EventHandler<ErrorClientResponseModel> ErrorHandler;
         private readonly IJsonConverter _converter;
         public ClientApiService(EventHandler<ErrorClientResponseModel> errorHandler, IJsonConverter converter)
         {
@@ -55,23 +52,46 @@ namespace CRUD_Сlients_API.Services
                     {
                         code = 200
                     };
-                    result.response = _converter.ReadJson<ClientResponseModel> (responseBody);
+                    result.response = _converter.ReadJson<ClientResponseModel>(responseBody);
                     GetClinet.Invoke(result);
                 }
                 else
                 {
-                   
+
 
                 }
             }
 
-        }       
+        }
         public async Task CreateClient(Action CreateClinet, ClientInfoModel currClient)
         {
-            using(HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
+                //string json = _converter.WriteJson<ClientInfoModel>(currClient);
+
+                Dictionary<string, string> values = new Dictionary<string, string>()
+                {
+                    {"id", $"3fa85f64-5717-4562-b3fc-2c963f66af23" },
+                    {"name", $"{currClient.name}" }//,
+                    //{ "surname", $"{currClient.surname }" },
+                    //{ "patronymic",$"{currClient.patronymic }" },
+                    //{ "сhildren",$"{_converter.WriteJson(currClient.children)}" },
+                    //{ "livingAddress",$"{_converter.WriteJson(currClient.livingAddress)}" },
+                    //{ "regAddress",$"{_converter.WriteJson(currClient.regAddress)}" },
+                    //{ "jobs",$"{_converter.WriteJson(currClient.jobs)}" },
+                };
+
+                var content = new FormUrlEncodedContent(values);
+
+                //var request = new HttpRequestMessage(HttpMethod.Post, $"{url}clients")
+                //{
+                //    Content = new StringContent( _converter.WriteJson(currClient), Encoding.UTF8, "application/json")
+                //};
+
+                //var response = await client.SendAsync(request);
+
                 HttpResponseMessage response = await client.PostAsync(
-                    $"{url}clients/", new StringContent(_converter.WriteJson<ClientInfoModel>(currClient), System.Text.Encoding.UTF8, "application/json"));
+                    $"{url}clients/", content);
 
                 if (response.IsSuccessStatusCode)
                 {

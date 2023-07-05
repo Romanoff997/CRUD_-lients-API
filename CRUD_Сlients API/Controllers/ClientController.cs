@@ -46,7 +46,7 @@ namespace CRUD_Сlients_API.Controllers
                 surname = "family",
                 patronymic = " test",
                 dob = new DateTime(),
-                сhildren = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
+                children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
                 passport =new PassportModel(),
                 livingAddress = new LivingAddressModel(),
                 regAddress = new RegAddressModel(),
