@@ -42,14 +42,15 @@ namespace CRUD_Сlients_API.Controllers
             
             
             }, new ClientInfoModel() {
+                id= new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
                 name = "тест",
                 surname = "family",
                 patronymic = " test",
                 dob = new DateTime(),
                 children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
-                passport =new PassportModel(),
-                livingAddress = new LivingAddressModel(),
-                regAddress = new RegAddressModel(),
+                //passport =new PassportModel() {number="fdf", createdAt="dgdf", dateIssued  },
+                //livingAddress = new LivingAddressModel(),
+                //regAddress = new RegAddressModel(),
                 jobs = new string[] { "job1", "job2" }
 
 } );
