@@ -16,6 +16,7 @@ namespace CRUD_Сlients_API.Controllers
         //private readonly IShortUrlService _shorter;
         //private readonly IJsonConverter converter;
         private readonly ClientApiService servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter() );
+        private IEnumerable<ClientInfoViewModel> clients;
         public ClientController()
         {
             //_userManager = userManager;
@@ -24,16 +25,25 @@ namespace CRUD_Сlients_API.Controllers
             //_shorter = new ShortUrlServiceNative();
         }
 
-
-        [HttpGet]
-        public  Task GetClients()
+        public IActionResult Index()
+        {
+            return View(clients);
+        }
+        //public IActionResult Index(IEnumerable<ClientInfoViewModel> _clients)
+        //{
+        //    return View(_clients);
+        //}
+        [HttpPost]
+        public IActionResult GetClients(object dfdf)
         {
             servcie.GetClinets((Response<ClientResponseModel> result) => 
-            { 
-            
-            
+            {
+                clients = result.response.data.ToArray();   //Enum.GetValues(typeof(ClientInfoViewModel)).Cast<ClientInfoViewModel>().
+                                                            //(ClientInfoViewModel)Enum.GetValues(typeof(result.response.data));
+                Index();
+
             }, new ClientRequestModel() );
-            return Task.CompletedTask;
+            return Index();
         }
 
         [HttpGet]
@@ -98,7 +108,7 @@ namespace CRUD_Сlients_API.Controllers
             servcie.DeleteClinet(() => 
             { 
             
-            }, clientId);
+            }, new Guid());
 
         }
 

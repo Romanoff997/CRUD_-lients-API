@@ -1,0 +1,97 @@
+﻿@using CRUD_Сlients_API.Models.Client;
+
+@model IEnumerable<ClientInfoViewModel>
+@{
+    string strTitle = "";
+    ViewBag.Title = strTitle;
+}
+
+<div>
+    <h2>@strTitle</h2>
+    <div>
+        <div class="div-box">
+            @*<a asp-action="AddLinkForm">Add Link</a>*@
+
+
+            <a asp-action="Add" asp-controller="Client">Edit</a></br>
+
+            <form asp-controller="Client" method="post" asp-action="GetClients">
+                <div class="form-group">
+                    <label class="control-label">sortBy</label>
+                    <input type="text" name="message" class="form-control" placeholder="">
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label">sortDir</label>
+                    <input type="text" name="message" class="form-control" placeholder="">
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label">limit</label>
+                    <input type="number" name="message" class="form-control" placeholder="">
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label">page</label>
+                    <input type="number" name="message" class="form-control" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="get clients" class="btn btn-success" />
+                </div>
+                
+            </form>
+        </div>
+        </div>
+@*        @if (Model.Any())
+        {
+*@
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(Model=>Model.name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(Model=>Model.surname)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(Model=>Model.updatedAt)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    @if (Model != null)
+                        foreach (var emp in Model)
+                        {
+                            <tr>
+                                <td>
+                                     @Html.DisplayFor(modelItem=>emp.name)
+                                </td>
+                                <td>
+                                     @Html.DisplayFor(modelItem=>emp.surname)
+                                </td>
+                                <td>
+                                     @Html.DisplayFor(modelItem=>emp.updatedAt)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@emp.id">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@emp.id">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@emp.id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+      
+    </div>
+
+    
+
+
+

@@ -1,7 +1,7 @@
 using CRUD_Ñlients_API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -27,6 +27,6 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Client}/{action=Index}");
 
 app.Run();

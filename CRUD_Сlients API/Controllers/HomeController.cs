@@ -14,16 +14,7 @@ namespace SimplifyLink.Controllers
 
         public IActionResult Index()
         {
-            
-            //return Redirect("Client/GetClients");
-            return Redirect("Client/CreateClient");
+            return View();
         }
-
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }

@@ -16,13 +16,12 @@ namespace CRUD_Сlients_API.Services
 {
     public class ClientApiService
     {
-        private readonly HttpClient httpClient;
         private const string url = "https://localhost:7113/api/";
         private readonly EventHandler<ErrorClientResponseModel> ErrorHandler;
         private readonly IJsonConverter _converter;
         public ClientApiService(EventHandler<ErrorClientResponseModel> errorHandler, IJsonConverter converter)
         {
-            ErrorHandler = errorHandler;
+            ErrorHandler += errorHandler;
             _converter = converter;
         }
         public async Task GetClinets(Action<Response<ClientResponseModel>> GetClinet, ClientRequestModel clientQuery)
@@ -95,8 +94,6 @@ namespace CRUD_Сlients_API.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                // Создание полного URL-адреса с параметрами
                 string urlWithParameters = $"{url}/clients/?{clientId}/";
 
                 
@@ -110,8 +107,7 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-                    //responseBody = await response.Content.ReadAsStringAsync();
-                    //ErrorHandler.Invoke(_converter.ReadJson<ClientErrorModel>(value: responseBody));
+
                 }
                 
             }
@@ -133,8 +129,7 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-                    //responseBody = await response.Content.ReadAsStringAsync();
-                    //ErrorHandler?.Invoke(_converter.ReadJson<ClientErrorModel>(responseBody));
+
                 }
             }
         }
@@ -156,8 +151,7 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-                   // responseBody = await response.Content.ReadAsStringAsync();
-                   // ErrorHandler?.Invoke(_converter.ReadJson<ClientErrorModel>(responseBody));
+
                 }
             }
         }
