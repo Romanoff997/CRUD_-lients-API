@@ -67,24 +67,8 @@ namespace CRUD_Сlients_API.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                //string json = _converter.WriteJson<ClientInfoModel>(currClient);
-
-                Dictionary<string, string> values = new Dictionary<string, string>()
-                {
-                    {"id", $"3fa85f64-5717-4562-b3fc-2c963f66af23" },
-                    {"name", $"{currClient.name}" },
-                    { "surname", $"{currClient.surname }" },
-                    { "patronymic",$"{currClient.patronymic }" }//,
-                    //{ "dob",$"{currClient.dob }" },
-                   // { "сhildren",$"{_converter.WriteJson(currClient.children)}" },
-                    //{ "passport",$"{_converter.WriteJson(currClient.passport)}" },
-                    //{ "livingAddress",$"{_converter.WriteJson(currClient.livingAddress)}" },
-                    //{ "regAddress",$"{_converter.WriteJson(currClient.regAddress)}" },
-                    //{ "jobs",$"{_converter.WriteJson(currClient.jobs)}" }
-                };
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var content = new FormUrlEncodedContent(values);
 
                 var request = new HttpRequestMessage(HttpMethod.Post, $"{url}clients")
                 {
@@ -94,15 +78,10 @@ namespace CRUD_Сlients_API.Services
                 var response = await client.SendAsync(request);
 
 
-
-                //HttpResponseMessage response = await client.PostAsync(
-                //    $"{url}clients/", content);
-
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
                     CreateClinet?.Invoke();
-                   // GetClinet.Invoke(response.Content.ToString());
 
                 }
                 else
@@ -112,7 +91,7 @@ namespace CRUD_Сlients_API.Services
                 
             }
         }
-        public async Task ShowClinet(Action<ClientInfoModel> ShowClinet, int clientId)
+        public async Task GetClinet(Action<ClientInfoModel> ShowClinet, Guid clientId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -137,7 +116,7 @@ namespace CRUD_Сlients_API.Services
                 
             }
         }
-        public async Task UpdateClinet(Action<string> UpdateClinet, int clientId, ClientInfoModel currClient)
+        public async Task UpdateClinet(Action<string> UpdateClinet, Guid clientId, ClientInfoModel currClient)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -159,7 +138,7 @@ namespace CRUD_Сlients_API.Services
                 }
             }
         }
-        public async Task DeleteClinet(Action DeleteClinet, int clientId)
+        public async Task DeleteClinet(Action DeleteClinet, Guid clientId)
         {
 
             using (HttpClient client = new HttpClient())

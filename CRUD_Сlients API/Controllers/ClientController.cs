@@ -3,6 +3,8 @@ using CRUD_Сlients_API.Services;
 using CRUD_Сlients_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using CRUD_Сlients_API.Models.Client;
+using System.Text;
+using System;
 
 namespace CRUD_Сlients_API.Controllers
 {
@@ -48,17 +50,60 @@ namespace CRUD_Сlients_API.Controllers
                 patronymic = " test",
                 dob = new DateTime(),
                 children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
-                //passport =new PassportModel() {number="fdf", createdAt="dgdf", dateIssued  },
+                passport =new PassportModel(),
                 //livingAddress = new LivingAddressModel(),
                 //regAddress = new RegAddressModel(),
                 jobs = new string[] { "job1", "job2" }
 
-} );
+            } );
             return Task.CompletedTask;
         }
-   
 
-        
+        [HttpGet]
+        public async Task GetClinet()
+        {
+            servcie.GetClinet((ClientInfoModel client) => 
+            { 
+             
+            }, new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"));
+
+        }
+        [HttpGet]
+        public async Task UpdateClinet()
+        {
+            servcie.UpdateClinet((string result) =>
+            {
+
+            }, 
+            new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
+            new ClientInfoModel()
+            {
+                id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
+                name = "тест",
+                surname = "family",
+                patronymic = " test",
+                dob = new DateTime(),
+                children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" },
+                passport = new PassportModel(),
+                //livingAddress = new LivingAddressModel(),
+                //regAddress = new RegAddressModel(),
+                jobs = new string[] { "job1", "job2" }
+
+            });
+
+        }
+        [HttpGet]
+        public async Task DeleteClinet()
+        {
+            servcie.DeleteClinet(() => 
+            { 
+            
+            }, clientId);
+
+        }
+
+
+
 
     }
 }

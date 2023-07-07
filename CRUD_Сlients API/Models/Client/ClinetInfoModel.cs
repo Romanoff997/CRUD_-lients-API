@@ -21,7 +21,7 @@ namespace CRUD_Сlients_API.Models.Client
         public string? patronymic { get; set; }
         public DateTime dob { get; set; }
         public string[] children { get; set; }
-        //public string[]? documentIds { get; set; }
+        public string[]? documentIds { get; set; }
         public PassportModel passport { get; set; }
         public LivingAddressModel livingAddress { get; set; }
         public RegAddressModel regAddress { get; set; }
