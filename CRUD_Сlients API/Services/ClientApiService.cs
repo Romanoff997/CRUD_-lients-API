@@ -30,11 +30,16 @@ namespace CRUD_Сlients_API.Services
             {
                 var parameters = new Dictionary<string, string>
                     {
-                        { "sortBy", "createdAt" },
-                        { "sortDir",  "asc"},
-                        { "limit", "10" },
-                        { "page",  "0" },
-                        { "search",  "" },
+                        //{ "sortBy", "createdAt" },
+                        //{ "sortDir",  "asc"},
+                        //{ "limit", "10" },
+                        //{ "page",  "0" },
+                        //{ "search",  "" }
+                        { "sortBy", clientQuery.sortBy },
+                        { "sortDir", clientQuery.sortDir},
+                        { "limit", clientQuery.limit.ToString() },
+                        { "page",  clientQuery.page.ToString() },
+                        { "search",  clientQuery.search },
                     };
 
                 string queryString = QueryHelpers.AddQueryString("", parameters);

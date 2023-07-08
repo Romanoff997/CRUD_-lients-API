@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using CRUD_Сlients_API.Models.Client;
 using System.Text;
 using System;
+using System.Collections.Generic;
 
 namespace CRUD_Сlients_API.Controllers
 {
@@ -16,7 +17,7 @@ namespace CRUD_Сlients_API.Controllers
         //private readonly IShortUrlService _shorter;
         //private readonly IJsonConverter converter;
         private readonly ClientApiService servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter() );
-        private IEnumerable<ClientInfoViewModel> clients;
+       // public IEnumerable<ClientInfoViewModel> clients;
         public ClientController()
         {
             //_userManager = userManager;
@@ -25,25 +26,35 @@ namespace CRUD_Сlients_API.Controllers
             //_shorter = new ShortUrlServiceNative();
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(clients);
+            return View("Index", new List <ClientInfoViewModel>());
         }
-        //public IActionResult Index(IEnumerable<ClientInfoViewModel> _clients)
-        //{
-        //    return View(_clients);
-        //}
-        [HttpPost]
-        public IActionResult GetClients(object dfdf)
-        {
-            servcie.GetClinets((Response<ClientResponseModel> result) => 
-            {
-                clients = result.response.data.ToArray();   //Enum.GetValues(typeof(ClientInfoViewModel)).Cast<ClientInfoViewModel>().
-                                                            //(ClientInfoViewModel)Enum.GetValues(typeof(result.response.data));
-                Index();
 
-            }, new ClientRequestModel() );
-            return Index();
+        [HttpPost]
+        public IActionResult Index(IEnumerable<ClientInfoViewModel> _clients)
+        {
+            return View(_clients);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetClients(IFormCollection form)
+        {
+            ClientRequestModel request = new ClientRequestModel()
+            { 
+                limit= int.Parse(form["limit"]),
+                page= int.Parse( form["page"]),
+                search = form["search"],
+                sortDir = form["sortDir"],
+                sortBy = form["sortBy"]
+
+            };
+            await servcie.GetClinets((Response<ClientResponseModel> result) => 
+            {
+                View("Index", result.response.data.ToArray());
+            }, request);
+            return View("Index");
         }
 
         [HttpGet]
@@ -70,12 +81,13 @@ namespace CRUD_Сlients_API.Controllers
         }
 
         [HttpGet]
-        public async Task GetClinet()
+        public async Task<IActionResult> GetClinet(Guid id)
         {
             servcie.GetClinet((ClientInfoModel client) => 
-            { 
-             
-            }, new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"));
+            {
+                View("Edit", client);
+            }, id);
+            return View("Index");
 
         }
         [HttpGet]
