@@ -67,7 +67,7 @@ namespace CRUD_Сlients_API.Services
             }
 
         }
-        public async Task CreateClient(Action CreateClinet, ClientInfoModel currClient)
+        public async Task CreateClient(Action CreateClinet, ClientInfoViewModel currClient)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -95,35 +95,41 @@ namespace CRUD_Сlients_API.Services
                 
             }
         }
-        public async Task GetClinet(Action<ClientInfoModel> ShowClinet, Guid clientId)
+        public async Task GetClinet(Action<ClientInfoViewModel> ShowClinet, Guid clientId)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                string urlWithParameters = $"{url}/clients/?{clientId}/";
-
-                
-                HttpResponseMessage response = await client.GetAsync(urlWithParameters);
-                string responseBody;
-
-                if (response.IsSuccessStatusCode && response.Content!=null)
+                using (HttpClient client = new HttpClient())
                 {
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    ShowClinet?.Invoke(_converter.ReadJson <ClientInfoModel>(responseBody));
-                }
-                else
-                {
+                    string urlWithParameters = $"{url}clients/{clientId}/";
+
+
+                    HttpResponseMessage response = await client.GetAsync(urlWithParameters);
+                    string responseBody;
+
+                    if (response.IsSuccessStatusCode && response.Content != null)
+                    {
+                        responseBody = await response.Content.ReadAsStringAsync();
+                        ShowClinet?.Invoke(_converter.ReadJson<ClientInfoViewModel>(responseBody));
+                    }
+                    else
+                    {
+
+                    }
 
                 }
-                
+            }
+            catch (Exception ex) 
+            { 
             }
         }
-        public async Task UpdateClinet(Action<string> UpdateClinet, Guid clientId, ClientInfoModel currClient)
+        public async Task UpdateClinet(Action<string> UpdateClinet, Guid clientId, ClientInfoViewModel currClient)
         {
             using (HttpClient client = new HttpClient())
             {
                 string urlWithParameters = $"{url}/clients/?{clientId}/";
 
-                HttpContent content = new StringContent(_converter.WriteJson<ClientInfoModel>(currClient), Encoding.UTF8, "application/json");
+                HttpContent content = new StringContent(_converter.WriteJson<ClientInfoViewModel>(currClient), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PatchAsync(urlWithParameters, content);
                 string responseBody;
                 

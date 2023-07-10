@@ -16,16 +16,16 @@ namespace CRUD_Сlients_API.Models.Client
     {
         [Required]
         public Guid id { get; set; }
-        public string name { get; set; }
+        public string? name { get; set; }
         public string? surname { get; set; }
         public string? patronymic { get; set; }
         public DateTime dob { get; set; }
-        public string[] children { get; set; }
+        public string[]? children { get; set; }
         public string[]? documentIds { get; set; }
         public PassportModel passport { get; set; }
         public LivingAddressModel livingAddress { get; set; }
         public RegAddressModel regAddress { get; set; }
-        public string[] jobs { get; set; }
+        public string[]? jobs { get; set; }
 
     }
 }

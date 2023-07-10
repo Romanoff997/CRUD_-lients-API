@@ -1,93 +1,99 @@
 ﻿@using CRUD_Сlients_API.Models.Client;
+@using CRUD_Сlients_API.Models;
 
-@model IEnumerable<ClientInfoViewModel>
+@model ClientRequestViewModel
 @{
     string strTitle = "";
     ViewBag.Title = strTitle;
 }
 
 <div>
-    <h2>@strTitle</h2>
-    <div>
-        <div class="div-box">
-            @*<a asp-action="AddLinkForm">Add Link</a>*@
+    <a asp-action="CreateClient" asp-controller="Client">Add Client</a></br>
+    <form asp-controller="Client" method="post" asp-action="GetClients">
 
+        <h2>@strTitle</h2>
+        <div>
+            <div class="div-box">
+                @*<a asp-action="AddLinkForm">Add Link</a>*@
+            
 
-            <a asp-action="Add" asp-controller="Client">Edit</a></br>
+        
+            <div class="form-group">
+                <label class="control-label">sortBy</label>
+                    @*<input type="text" name="sortBy" class="form-control" placeholder="@Model.request.">*@
+                    <input asp-for="request.sortBy" class="form-control" />
+            </div>
 
-            <form asp-controller="Client" method="post" asp-action="GetClients">
-                <div class="form-group">
-                    <label class="control-label">sortBy</label>
-                    <input type="text" name="sortBy" class="form-control" placeholder="">
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label">sortDir</label>
-                    <input type="text" name="sortDir" class="form-control" placeholder="">
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label">limit</label>
-                    <input type="number" name="limit" class="form-control" placeholder="">
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label">page</label>
-                    <input type="number" name="page" class="form-control" placeholder="">
-                </div>
+            <div class="form-group">
+                <label class="control-label">sortDir</label>
+                    @*<input type="text" name="sortDir" class="form-control" placeholder="@Model.request.">*@
+                    <input asp-for="request.sortDir" class="form-control" value="@Model.request.sortDir" />
+            </div>
 
-                <div class="form-group">
-                    <input type="submit" value="get clients" class="btn btn-success" />
-                </div>
-                
-            </form>
+            <div class="form-group">
+                <label class="control-label">limit</label>
+                @*<input type="number" name="limit" class="form-control" placeholder="">*@
+                    <input asp-for="request.limit" class="form-control" placeholder="@Model.request.limit" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">page</label>
+                @*<input type="number" name="page" class="form-control" placeholder="">*@
+                    <input asp-for="request.page" class="form-control" placeholder="@Model.request.page" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="get clients" class="btn btn-success" />
+            </div>
+
+       
         </div>
         </div>
-@*        @if (Model.Any())
+    </form>
+        @*        @if (Model.Any())
         {
 *@
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
 
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(Model=>Model.name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(Model=>Model.surname)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(Model=>Model.updatedAt)
-                            </th>
-                        </tr>
-                    </thead>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(Model=>Model.data[0].name)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(Model=>Model.data[0].surname)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(Model=>Model.data[0].createdAt)
+                        </th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                    @if (Model != null)
-                        foreach (var emp in Model)
+                <tbody>
+                    @if (Model.data.Count>0)
+                        foreach (var emp in Model.data)
                         {
                             <tr>
                                 <td>
-                                     @Html.DisplayFor(modelItem=>emp.name)
+                                    @Html.DisplayFor(modelItem=>emp.name)
                                 </td>
                                 <td>
-                                     @Html.DisplayFor(modelItem=>emp.surname)
+                                    @Html.DisplayFor(modelItem=>emp.surname)
                                 </td>
                                 <td>
-                                     @Html.DisplayFor(modelItem=>emp.updatedAt)
+                                    @Html.DisplayFor(modelItem=>emp.updatedAt)
                                 </td>
                                 <td>
-                                <a asp-action="GetClinet" asp-route-id="@emp.id">GetClient</a>
-@*                                    <a asp-action="Details" asp-route-id="@emp.id">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@emp.id">Delete</a>*@
+                                    <a asp-action="GetClinet" asp-route-id="@emp.id">GetClient</a>
                                 </td>
                             </tr>
                         }
-                    </tbody>
+                </tbody>
 
                 </table>
             </div>
+      
       
     </div>
 

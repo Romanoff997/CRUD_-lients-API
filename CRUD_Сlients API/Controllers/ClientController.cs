@@ -11,118 +11,107 @@ namespace CRUD_Сlients_API.Controllers
 {
     public class ClientController: Controller
     {
-        //private readonly UserManager<IdentityUser> _userManager;
-        //private readonly DataManager _dataManager;
-        //private readonly IMapingService _mapper;
-        //private readonly IShortUrlService _shorter;
-        //private readonly IJsonConverter converter;
-        private readonly ClientApiService servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter() );
-       // public IEnumerable<ClientInfoViewModel> clients;
+
+        private readonly ClientApiService servcie;
+         //static private List<ClientInfoViewModel> _client = new List<ClientInfoViewModel>();
+         static private ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
+        static private ClientInfoViewModel currClient = new ClientInfoViewModel();
         public ClientController()
         {
-            //_userManager = userManager;
-            //_dataManager = dataManager;
-            //_mapper = mapper;
-            //_shorter = new ShortUrlServiceNative();
+            servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter());
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            return View("Index", new List <ClientInfoViewModel>());
+            return View("Index", requestGetClients);
         }
 
-        [HttpPost]
-        public IActionResult Index(IEnumerable<ClientInfoViewModel> _clients)
-        {
-            return View(_clients);
-        }
 
         [HttpPost]
-        public async Task<IActionResult> GetClients(IFormCollection form)
+        public async Task<IActionResult> GetClients(ClientRequestViewModel form)
         {
-            ClientRequestModel request = new ClientRequestModel()
-            { 
-                limit= int.Parse(form["limit"]),
-                page= int.Parse( form["page"]),
-                search = form["search"],
-                sortDir = form["sortDir"],
-                sortBy = form["sortBy"]
-
-            };
-            await servcie.GetClinets((Response<ClientResponseModel> result) => 
+            await servcie.GetClinets((Response<ClientResponseModel> result) =>
             {
-                View("Index", result.response.data.ToArray());
-            }, request);
-            return View("Index");
+                requestGetClients = new ClientRequestViewModel
+                {
+                    request = form.request,
+                    data = result.response.data.ToList()
+                };
+            }, form.request);
+            return Index();
         }
 
         [HttpGet]
-        public  Task CreateClient()
+        //public IActionResult CreateClient()
+        //{
+        //    return View("Create");
+        //}
+        [HttpPost]
+        public async Task<IActionResult> CreateClient(ClientInfoViewModel client)
         {
-            servcie.CreateClient(() => 
+           await servcie.CreateClient(() => 
             { 
             
             
-            }, new ClientInfoModel() {
-                id= new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
-                name = "тест",
-                surname = "family",
-                patronymic = " test",
-                dob = new DateTime(),
-                children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }, 
-                passport =new PassportModel(),
-                //livingAddress = new LivingAddressModel(),
-                //regAddress = new RegAddressModel(),
-                jobs = new string[] { "job1", "job2" }
+            }, client);
 
-            } );
-            return Task.CompletedTask;
+            return Redirect("/");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetClinet(Guid id)
         {
-            servcie.GetClinet((ClientInfoModel client) => 
+            ClientInfoViewModel client = new ClientInfoViewModel();
+            await servcie.GetClinet((ClientInfoViewModel _client) => 
             {
-                View("Edit", client);
+                currClient = _client;
             }, id);
-            return View("Index");
-
+            return View("Show", currClient);
         }
+
+        [HttpPost]
+        public IActionResult Edit(ClientInfoViewModel _currClient)
+        {
+            return View("Edit", currClient);
+        }
+
         [HttpGet]
-        public async Task UpdateClinet()
+        public async Task<IActionResult> UpdateClinet(Guid id)
         {
             servcie.UpdateClinet((string result) =>
             {
 
             }, 
             new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
-            new ClientInfoModel()
+            new ClientInfoViewModel()
             {
                 id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
                 name = "тест",
                 surname = "family",
                 patronymic = " test",
                 dob = new DateTime(),
-                children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" },
-                passport = new PassportModel(),
+               // children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" },
+                //passport = new PassportModel(),
                 //livingAddress = new LivingAddressModel(),
                 //regAddress = new RegAddressModel(),
-                jobs = new string[] { "job1", "job2" }
+               // jobs = new string[] { "job1", "job2" }
 
             });
+            return Redirect("/");
 
         }
+
         [HttpGet]
-        public async Task DeleteClinet()
+        public async Task<IActionResult> DeleteClinet(Guid id)
         {
             servcie.DeleteClinet(() => 
             { 
             
-            }, new Guid());
-
+            },id);
+            return Redirect("/");
         }
+        
 
 
 
