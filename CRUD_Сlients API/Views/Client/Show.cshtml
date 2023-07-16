@@ -10,7 +10,7 @@
 }
 <h2>Details</h2>
 
-<form asp-controller="Client" method="post" asp-action="Edit">
+@*<form asp-controller="Client" method="post" asp-action="Edit">*@
 
     <h2>@strTitle</h2>
     <div>
@@ -23,6 +23,12 @@
                 </dt>
                 <dt>
                     @Html.DisplayFor(model => model.name)
+                </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.patronymic)
+                </dt>
+                <dt>
+                    @Html.DisplayFor(model => model.patronymic)
                 </dt>
                 <dt>
                     @Html.DisplayNameFor(model => model.createdAt)
@@ -44,16 +50,17 @@
                 </dt>*@
 
             </dl>
-            <div class="form-group">
+@*            <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-success" />
-            </div>
+            </div>*@
 
 
         </div>
     </div>
-</form>
+@*</form>*@
 
 <div>
-    <a asp-action="Delete" asp-route-id="@Model.id">Delete</a><br />
+    <a asp-action="Edit">Update</a><br />
+    <a asp-action="DeleteClient" asp-route-id="@Model.id">Delete</a><br />
     <a asp-action="Index">Back to List</a>
 </div>

@@ -5,6 +5,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CRUD_Сlients_API.Models.Client
 {
+    public class Child
+    {
+        public Guid id { get; set; }
+
+        [Display(Name = "Имя")]
+        public string name { get; set; }
+        [Display(Name = "Фамилия")]
+        public string? surname { get; set; }
+        //[Required]
+        [Display(Name = "Отчество")]
+        public string? patronymic { get; set; }
+        [Display(Name = "День рождения")]
+        public DateTime dob { get; set; }
+    }
+
     public class ClientInfoViewModel
     {
         //[Required]
@@ -16,9 +31,12 @@ namespace CRUD_Сlients_API.Models.Client
         [Display(Name = "Фамилия")]
         public string? surname { get; set; }
         //[Required]
+        [Display(Name = "Отчество")]
         public string? patronymic { get; set; }
+
+        [Display(Name = "День рождения")]
         public DateTime dob { get; set; }
-        //public string[]? children { get; set; }
+        public List<Child>? children { get; set; } = new List<Child>();
        // public string[]? documentIds { get; set; }
         //[Required]
         //public PassportModel? passport { get; set; }

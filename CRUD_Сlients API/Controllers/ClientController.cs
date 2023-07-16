@@ -9,12 +9,11 @@ using System.Collections.Generic;
 
 namespace CRUD_Сlients_API.Controllers
 {
-    public class ClientController: Controller
+    public class ClientController : Controller
     {
 
         private readonly ClientApiService servcie;
-         //static private List<ClientInfoViewModel> _client = new List<ClientInfoViewModel>();
-         static private ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
+        static private ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
         static private ClientInfoViewModel currClient = new ClientInfoViewModel();
         public ClientController()
         {
@@ -31,6 +30,7 @@ namespace CRUD_Сlients_API.Controllers
         [HttpPost]
         public async Task<IActionResult> GetClients(ClientRequestViewModel form)
         {
+
             await servcie.GetClinets((Response<ClientResponseModel> result) =>
             {
                 requestGetClients = new ClientRequestViewModel
@@ -43,18 +43,37 @@ namespace CRUD_Сlients_API.Controllers
         }
 
         [HttpGet]
-        //public IActionResult CreateClient()
-        //{
-        //    return View("Create");
-        //}
+        public IActionResult CreateClient()
+        {
+            return View("Create", new ClientInfoViewModel());
+        }
+        [HttpPost]
+        public IActionResult AddChild([FromBody]Child chil)
+        {
+            //children.Add(new Child() { 
+            //dob=client.dob,
+            //surname=client.surname,
+            //patronymic=client.patronymic,   
+            //id=new Guid()
+            //});
+            currClient.children.Add(new Child()
+            {
+                dob = chil.dob,
+                surname = chil.surname,
+                patronymic = chil.patronymic,
+                id = new Guid()
+            });
+            return View("Create", currClient);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateClient(ClientInfoViewModel client)
         {
-           await servcie.CreateClient(() => 
-            { 
-            
-            
-            }, client);
+            currClient = client;
+            await servcie.CreateClient(() =>
+             {
+
+
+             }, currClient);
 
             return Redirect("/");
         }
@@ -63,53 +82,52 @@ namespace CRUD_Сlients_API.Controllers
         public async Task<IActionResult> GetClinet(Guid id)
         {
             ClientInfoViewModel client = new ClientInfoViewModel();
-            await servcie.GetClinet((ClientInfoViewModel _client) => 
+            await servcie.GetClinet((ClientInfoViewModel _client) =>
             {
                 currClient = _client;
             }, id);
             return View("Show", currClient);
         }
 
-        [HttpPost]
-        public IActionResult Edit(ClientInfoViewModel _currClient)
+        [HttpGet]
+        public IActionResult Edit()
         {
             return View("Edit", currClient);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> UpdateClinet(Guid id)
+        [HttpPost]
+        public async Task<IActionResult> UpdateClient(ClientInfoViewModel client)
         {
-            servcie.UpdateClinet((string result) =>
+            await servcie.UpdateClinet(() =>
             {
 
-            }, 
-            new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
-            new ClientInfoViewModel()
-            {
-                id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66af23"),
-                name = "тест",
-                surname = "family",
-                patronymic = " test",
-                dob = new DateTime(),
-               // children = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" },
-                //passport = new PassportModel(),
-                //livingAddress = new LivingAddressModel(),
-                //regAddress = new RegAddressModel(),
-               // jobs = new string[] { "job1", "job2" }
-
-            });
-            return Redirect("/");
-
+            }, client);
+            
+            return RedirectToAction("IndexRefresh");
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteClinet(Guid id)
+        public async Task<IActionResult> DeleteClient(Guid id)
         {
-            servcie.DeleteClinet(() => 
+            await servcie.DeleteClinet(() => 
             { 
             
             },id);
-            return Redirect("/");
+            return RedirectToAction("IndexRefresh");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IndexRefresh()
+        {
+            await servcie.GetClinets((Response<ClientResponseModel> result) =>
+            {
+                requestGetClients = new ClientRequestViewModel
+                {
+                    request = requestGetClients.request,
+                    data = result.response.data.ToList()
+                };
+            }, requestGetClients.request);
+            return Index();
         }
         
 

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using CRUD_Сlients_API.Models.Client;
+using Newtonsoft.Json;
 
 namespace CRUD_Сlients_API.Services
 {
@@ -97,46 +98,54 @@ namespace CRUD_Сlients_API.Services
         }
         public async Task GetClinet(Action<ClientInfoViewModel> ShowClinet, Guid clientId)
         {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    string urlWithParameters = $"{url}clients/{clientId}/";
-
-
-                    HttpResponseMessage response = await client.GetAsync(urlWithParameters);
-                    string responseBody;
-
-                    if (response.IsSuccessStatusCode && response.Content != null)
-                    {
-                        responseBody = await response.Content.ReadAsStringAsync();
-                        ShowClinet?.Invoke(_converter.ReadJson<ClientInfoViewModel>(responseBody));
-                    }
-                    else
-                    {
-
-                    }
-
-                }
-            }
-            catch (Exception ex) 
-            { 
-            }
-        }
-        public async Task UpdateClinet(Action<string> UpdateClinet, Guid clientId, ClientInfoViewModel currClient)
-        {
             using (HttpClient client = new HttpClient())
             {
-                string urlWithParameters = $"{url}/clients/?{clientId}/";
+                string urlWithParameters = $"{url}clients/{clientId}/";
 
-                HttpContent content = new StringContent(_converter.WriteJson<ClientInfoViewModel>(currClient), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PatchAsync(urlWithParameters, content);
+
+                HttpResponseMessage response = await client.GetAsync(urlWithParameters);
                 string responseBody;
-                
+
                 if (response.IsSuccessStatusCode && response.Content != null)
                 {
                     responseBody = await response.Content.ReadAsStringAsync();
-                    //ShowClinet?.Invoke(_converter.ReadJson<ClientInfoModel>(responseBody));
+                    ShowClinet?.Invoke(_converter.ReadJson<ClientInfoViewModel>(responseBody));
+                }
+                else
+                {
+
+                }
+            }
+            
+        }
+        public async Task UpdateClinet(Action UpdateClinet, ClientInfoViewModel currClient)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                ClientInfoViewModel currClient2 = new ClientInfoViewModel()
+                {
+                    name = "dfsd",
+                    surname = "dsfsd",
+                    id = currClient.id,
+                    dob = DateTime.Now,
+                    updatedAt = DateTime.Now,
+                    createdAt = DateTime.Now,
+                    curWorkExp = 12,
+                    monExpenses = 0,
+                    monIncome = 23,
+                    patronymic = "dfsdf",
+                    typeEducation = "sdfsdf"
+                };
+                string urlWithParameters = $"{url}clients/{currClient.id}/";
+
+                HttpContent content = new StringContent(_converter.WriteJson(currClient2), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(urlWithParameters, content);
+                string responseBody;
+
+                if (response.IsSuccessStatusCode && response.Content != null)
+                {
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    UpdateClinet?.Invoke();
                 }
                 else
                 {
@@ -149,7 +158,7 @@ namespace CRUD_Сlients_API.Services
 
             using (HttpClient client = new HttpClient())
             {
-                string urlWithParameters = $"{url}/clients/?{clientId}";
+                string urlWithParameters = $"{url}clients/{clientId}/";
 
                 HttpResponseMessage response = await client.DeleteAsync(urlWithParameters);
 

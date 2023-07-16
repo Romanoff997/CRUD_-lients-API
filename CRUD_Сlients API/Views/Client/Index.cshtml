@@ -9,6 +9,7 @@
 
 <div>
     <a asp-action="CreateClient" asp-controller="Client">Add Client</a></br>
+
     <form asp-controller="Client" method="post" asp-action="GetClients">
 
         <h2>@strTitle</h2>
@@ -86,6 +87,7 @@
                                 </td>
                                 <td>
                                     <a asp-action="GetClinet" asp-route-id="@emp.id">GetClient</a>
+                                    <a asp-action="DeleteClient" asp-route-id="@emp.id">Delete</a><br />
                                 </td>
                             </tr>
                         }

@@ -6,38 +6,100 @@
     string strTitle = "";
     ViewBag.Title = strTitle;
 }
-<h1>Create</h1>
-<h4>Create Entry</h4>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Client" method="post" asp-action="CreateClient">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<input type="hidden" asp-for="id" />*@
-            <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control"/>
-                <span asp-validation-for="name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="surname" class="control-label"></label>
-                <input asp-for="surname" class="form-control" />
-                <span asp-validation-for="surname" class="text-danger" />
-            </div>
-            <div class="form-group">
-                <label asp-for="createdAt" class="control-label"></label>
-                <input asp-for="createdAt" class="form-control" />
-                <span asp-validation-for="createdAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="updatedAt" class="control-label"></label>
-                <input asp-for="updatedAt" class="form-control" />
-                <span asp-validation-for="updatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
-            </div>
-        </form>
+<h2>Добавление нового клиента</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="name">Имя:</label>
+        <input asp-for="name" type="text" class="form-control" id="name" value="@Model.name" >
+    </div>
+    <div class="form-group">
+        <label asp-for="surname">Фамилия:</label>
+        <input asp-for="surname" type="text" class="form-control" id="surname" value="@Model.surname" >
+    </div>
+    <div class="form-group">
+        <label asp-for="patronymic">Отчество:</label>
+        <input type="text" class="form-control" id="patronymic" asp-for="dob" value="@Model.patronymic" >
+    </div>
+    <div class="form-group">
+        <label asp-for="dob">Дата рождения:</label>
+        <input type="date" class="form-control" id="dob" asp-for="dob" value="@Model.dob.ToString("yyyy-MM-dd")" >
     </div>
 
-</div>
+    <h3>Дети</h3>
+    <div class="form-group">
+        <input type="text" class="form-control" id="childName" placeholder="Имя">
+        <input type="text" class="form-control" id="childSurname" placeholder="Фамилия">
+        <input type="text" class="form-control" id="childPatronymic" placeholder="Отчество">
+        <input type="date" class="form-control" id="childDob"><
+        <button type="button" class="btn btn-primary add-child-btn">Добавить</button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="oi">
+            @foreach (var child in Model.children)
+            {
+                <tr>
+                    <td>@child.name</td>
+                    <td>@child.surname</td>
+                    <td>@child.patronymic</td>
+                    <td>@child.dob.ToShortDateString()</td>
+                    <td><button class="btn btn-danger delete-child-btn" data-child-id="@child.id">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Создать</button>
+</form>
+
+@section scripts {
+    <script>
+        $(function () {
+            // Обработчик клика на кнопку "Добавить"
+            $('.add-child-btn').click(function () {
+                //var child = {
+                //    name: $('#childName').val(),
+                //    surname: $('#childSurname').val(),
+                //    patronymic: $('#childPatronymic').val(),
+                //    dob: $('#childDob').val()
+                //};
+                var child = {
+                    name: $('#childName').val(),
+                    surname: $('#childSurname').val(),
+                    patronymic: $('#childPatronymic').val(),
+                            dob: $('#childDob').val()
+                };
+                // Добавляем новый элемент Child в модель представления
+                alert(child.name);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AddChild", "Client")',
+                    contentType: "application/json",
+                    data: JSON.stringify(child),
+                    success: function (result) {
+                        
+                    }
+                    });
+                // Добавляем новый элемент Child в таблицу на странице
+                $('#oi').append('<tr><td>' + child.name + '</td><td>' + child.surname + '</td><td>' + child.patronymic + '</td><td>' + child.dob + '</td><td><button type="button" id="dele">Delete</button></td></tr>');
+            });
+            // Обработчик клика на кнопку "Удалить"
+            $('#dele').on('click', function () {
+                //var childId = $(this).data('child-id');
+                // Удаляем элемент Child из таблицы на странице
+                //$(this).closest('tr').remove();
+                alert("delete");
+            });
+        });
+    </script>
+}
