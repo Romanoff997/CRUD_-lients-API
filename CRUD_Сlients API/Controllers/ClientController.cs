@@ -45,10 +45,10 @@ namespace CRUD_Сlients_API.Controllers
         [HttpGet]
         public IActionResult CreateClient()
         {
-            return View("Create", new ClientInfoViewModel());
+            return RedirectToPage("/Create");
         }
         [HttpPost]
-        public IActionResult AddChild([FromBody]Child chil)
+        public IActionResult AddChild(Child chil)
         {
             //children.Add(new Child() { 
             //dob=client.dob,

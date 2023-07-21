@@ -1,30 +1,38 @@
-﻿
+﻿@page
+@using CRUD_Сlients_API.Pages;
 @using CRUD_Сlients_API.Models.Client;
-
-@model ClientInfoViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@model Create
 @{
-    string strTitle = "";
+    string strTitle = "Ntcn";
     ViewBag.Title = strTitle;
+    Layout = "_Layout";
+    //ClientInfoViewModel currTest = Model.currClient;
+    //currTest.children = new List<Child>();
 }
-
+@*@{
+    string strTitle = "Ntcn";
+    ViewBag.Title = strTitle;
+}*@
+@*Html.AntiForgeryToken()*@
 <h2>Добавление нового клиента</h2>
 
 <form method="post">
     <div class="form-group">
-        <label asp-for="name">Имя:</label>
-        <input asp-for="name" type="text" class="form-control" id="name" value="@Model.name" >
+        <label asp-for="currClient.name">Имя:</label>
+        <input asp-for="currClient.name" type="text" class="form-control" id="name" >
     </div>
     <div class="form-group">
-        <label asp-for="surname">Фамилия:</label>
-        <input asp-for="surname" type="text" class="form-control" id="surname" value="@Model.surname" >
+        <label asp-for="currClient.surname">Фамилия:</label>
+        <input asp-for="currClient.surname" type="text" class="form-control" id="surname">
     </div>
     <div class="form-group">
-        <label asp-for="patronymic">Отчество:</label>
-        <input type="text" class="form-control" id="patronymic" asp-for="dob" value="@Model.patronymic" >
+        <label asp-for="currClient.patronymic">Отчество:</label>
+        <input type="text" class="form-control" id="patronymic" asp-for="currClient.dob">
     </div>
     <div class="form-group">
-        <label asp-for="dob">Дата рождения:</label>
-        <input type="date" class="form-control" id="dob" asp-for="dob" value="@Model.dob.ToString("yyyy-MM-dd")" >
+        <label asp-for="currClient.dob">Дата рождения:</label>
+        <input type="date" class="form-control" id="dob" asp-for="currClient.dob">
     </div>
 
     <h3>Дети</h3>
@@ -46,16 +54,19 @@
             </tr>
         </thead>
         <tbody id="oi">
-            @foreach (var child in Model.children)
+@*            @if (Model.currClient.children != null)
             {
-                <tr>
-                    <td>@child.name</td>
+                foreach (var child in Model.currClient.children)
+                {
+                    <tr>
+                        <td>@child.name</td>
                     <td>@child.surname</td>
                     <td>@child.patronymic</td>
                     <td>@child.dob.ToShortDateString()</td>
                     <td><button class="btn btn-danger delete-child-btn" data-child-id="@child.id">Delete</button></td>
                 </tr>
-            }
+                }
+            }*@
         </tbody>
     </table>
 
@@ -63,33 +74,42 @@
 </form>
 
 @section scripts {
+    @*Html.AntiForgeryToken();*@
     <script>
         $(function () {
             // Обработчик клика на кнопку "Добавить"
             $('.add-child-btn').click(function () {
-                //var child = {
-                //    name: $('#childName').val(),
-                //    surname: $('#childSurname').val(),
-                //    patronymic: $('#childPatronymic').val(),
-                //    dob: $('#childDob').val()
-                //};
+
                 var child = {
                     name: $('#childName').val(),
                     surname: $('#childSurname').val(),
                     patronymic: $('#childPatronymic').val(),
-                            dob: $('#childDob').val()
+                    dob: $('#childDob').val()
                 };
                 // Добавляем новый элемент Child в модель представления
                 alert(child.name);
+                //(currTest.children as List<Child>).Add(new Child() {name="dsfsfdfs"});
+                var token = "@Xsrf.GetAndStoreTokens(HttpContext).RequestToken";
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("AddChild", "Client")',
-                    contentType: "application/json",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "RequestVerificationToken": token
+                    },
+                    url: "/Create?handler=AddChild", //"Url.Page("Create","AddChild")", //"/Create?handler=AddChild",//'Url.Action(AddChild, Client)',
+                    //contentType: "application/json",
+                    //dataType: "json",
+                    //data: { obj: child },
                     data: JSON.stringify(child),
                     success: function (result) {
-                        
-                    }
-                    });
+                        alert("успез");
+                    },
+                    error: function (request, error) {
+                        console.log(arguments);
+                        alert(" Can't do because: " + error);
+                    },
+
+                });
                 // Добавляем новый элемент Child в таблицу на странице
                 $('#oi').append('<tr><td>' + child.name + '</td><td>' + child.surname + '</td><td>' + child.patronymic + '</td><td>' + child.dob + '</td><td><button type="button" id="dele">Delete</button></td></tr>');
             });
