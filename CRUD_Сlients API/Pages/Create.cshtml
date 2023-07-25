@@ -1,14 +1,20 @@
 ﻿@page
+@using CRUD_Сlients_API.Helpers;
 @using CRUD_Сlients_API.Pages;
 @using CRUD_Сlients_API.Models.Client;
+@using CRUD_Сlients_API.Services;
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@inject IJsonConverter _converter
 @model Create
 @{
-    string strTitle = "Ntcn";
-    ViewBag.Title = strTitle;
+
+    ViewBag.Title = "Create client";
     Layout = "_Layout";
-    //ClientInfoViewModel currTest = Model.currClient;
-    //currTest.children = new List<Child>();
+    var children = CRUD_Сlients_API.Helpers.SessionExtensions.Get<List<Child>>(HttpContext.Session, "children", _converter);
+    if (children != null)
+        Model.currClient.children = children;
+
+
 }
 @*@{
     string strTitle = "Ntcn";
@@ -53,24 +59,12 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody id="oi">
-@*            @if (Model.currClient.children != null)
-            {
-                foreach (var child in Model.currClient.children)
-                {
-                    <tr>
-                        <td>@child.name</td>
-                    <td>@child.surname</td>
-                    <td>@child.patronymic</td>
-                    <td>@child.dob.ToShortDateString()</td>
-                    <td><button class="btn btn-danger delete-child-btn" data-child-id="@child.id">Delete</button></td>
-                </tr>
-                }
-            }*@
-        </tbody>
+        <div id="listContainer">
+            @Html.Partial("_ChildrenPartial", Model.currClient.children)
+        </div>
     </table>
 
-    <button type="submit" class="btn btn-primary">Создать</button>
+    <input type="submit" class="btn btn-primary">Создать</input>
 </form>
 
 @section scripts {
@@ -81,28 +75,65 @@
             $('.add-child-btn').click(function () {
 
                 var child = {
+                    id : 'bbbd861b-62ae-4eb5-9677-3aa2e354c583',
                     name: $('#childName').val(),
                     surname: $('#childSurname').val(),
                     patronymic: $('#childPatronymic').val(),
                     dob: $('#childDob').val()
                 };
+        @{
+            //Model.childT=new Child()
+            //{
+            //    id=
+                    
+            //}
+        }
                 // Добавляем новый элемент Child в модель представления
-                alert(child.name);
+                   // alert('ViewData["Message"].ToString()');
                 //(currTest.children as List<Child>).Add(new Child() {name="dsfsfdfs"});
                 var token = "@Xsrf.GetAndStoreTokens(HttpContext).RequestToken";
+                //$.ajax({
+                //    type: "POST",
+                //    headers: {
+                //        "Content-Type": "application/json; charset=utf-8",
+                //        "RequestVerificationToken": token
+                //    },
+                //    url: "/Create?handler=AddChild", //"Url.Page("Create","AddChild")", //"/Create?handler=AddChild",//'Url.Action(AddChild, Client)',
+                //    contentType: "application/json; charset=utf-8",
+                //    //contentType: "application/json",
+                //    //dataType: "json",
+                //    //data: { obj: child },
+                //    data: JSON.stringify(child),
+                //    success: function (result) {
+                //        alert("успез");
+                //    },
+                //    error: function (request, error) {
+                //        console.log(arguments);
+                //        alert(" Can't do because: " + error);
+                //    },
+
+                //});
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     headers: {
-                        "Content-Type": "application/json",
                         "RequestVerificationToken": token
                     },
                     url: "/Create?handler=AddChild", //"Url.Page("Create","AddChild")", //"/Create?handler=AddChild",//'Url.Action(AddChild, Client)',
+
                     //contentType: "application/json",
                     //dataType: "json",
                     //data: { obj: child },
-                    data: JSON.stringify(child),
+                    data: {
+                        //id: 'bbbd861b-62ae-4eb5-9677-3aa2e354c583',
+                        name: $('#childName').val(),
+                        surname: $('#childSurname').val(),
+                        patronymic: $('#childPatronymic').val(),
+                        dob: $('#childDob').val()
+                    },
                     success: function (result) {
                         alert("успез");
+                        //location.reload();
+                        $('#listContainer').html(result);
                     },
                     error: function (request, error) {
                         console.log(arguments);
@@ -111,7 +142,7 @@
 
                 });
                 // Добавляем новый элемент Child в таблицу на странице
-                $('#oi').append('<tr><td>' + child.name + '</td><td>' + child.surname + '</td><td>' + child.patronymic + '</td><td>' + child.dob + '</td><td><button type="button" id="dele">Delete</button></td></tr>');
+                //$('#oi').append('<tr><td>' + child.name + '</td><td>' + child.surname + '</td><td>' + child.patronymic + '</td><td>' + child.dob + '</td><td><button type="button" id="dele">Delete</button></td></tr>');
             });
             // Обработчик клика на кнопку "Удалить"
             $('#dele').on('click', function () {

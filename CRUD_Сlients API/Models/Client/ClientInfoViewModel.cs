@@ -36,7 +36,7 @@ namespace CRUD_Сlients_API.Models.Client
 
         [Display(Name = "День рождения")]
         public DateTime dob { get; set; }
-        public List<Child>? children { get; set; } = new List<Child>();
+        public IEnumerable<Child>? children { get; set; }
        // public string[]? documentIds { get; set; }
         //[Required]
         //public PassportModel? passport { get; set; }

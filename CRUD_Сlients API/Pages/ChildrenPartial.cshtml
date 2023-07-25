@@ -1,0 +1,33 @@
+﻿@using CRUD_Сlients_API.Models.Client;
+
+@model List<Child> 
+
+<tbody id="oi">
+    @if (Model != null)
+    {
+        int i = 0;
+        foreach (var child in Model)
+        {
+
+            <input type="hidden" class="form-control" asp-for="child.id">
+            <tr>
+                <td>
+                    <input type="text" class="form-control" asp-for="child.name" value="@child.name" />
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" asp-for="child.surname" value="@child.surname" />
+                </td>
+
+                <td>
+                    <input type="text" class="form-control" id="dob" asp-for="child.patronymic" value="@child.patronymic" />
+                </td>
+
+                <td>
+                    <input type="date" class="form-control" id="dob" asp-for="child.dob" value="@child.dob" />
+                </td>
+            </tr>
+            i++;
+        }
+    }
+</tbody>

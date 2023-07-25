@@ -56,13 +56,13 @@ namespace CRUD_Сlients_API.Controllers
             //patronymic=client.patronymic,   
             //id=new Guid()
             //});
-            currClient.children.Add(new Child()
-            {
-                dob = chil.dob,
-                surname = chil.surname,
-                patronymic = chil.patronymic,
-                id = new Guid()
-            });
+            //currClient.children.Add(new Child()
+            //{
+            //    dob = chil.dob,
+            //    surname = chil.surname,
+            //    patronymic = chil.patronymic,
+            //    id = new Guid()
+            //});
             return View("Create", currClient);
         }
         [HttpPost]

@@ -1,10 +1,18 @@
 using CRUD_Ñlients_API.Middleware;
+using CRUD_Ñlients_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
+//builder.Services.AddSingleton<JsonNewtonConverter>(new JsonNewtonConverter());
+builder.Services.AddSingleton<IJsonConverter>(provider => {
+
+    return new JsonNewtonConverter();
+});
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -16,6 +24,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -24,9 +33,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-//app.MapRazorPages();
+app.MapRazorPages();
 
-app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+//app.UseEndpoints(endpoints => endpoints.MapRazorPages());
 
 app.MapControllerRoute(
     name: "default",
