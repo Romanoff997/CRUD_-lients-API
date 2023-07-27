@@ -1,33 +1,48 @@
 ﻿@using CRUD_Сlients_API.Models.Client;
 
-@model List<Child> 
+@model IEnumerable<Child>
 
-<tbody id="oi">
-    @if (Model != null)
-    {
-        int i = 0;
-        foreach (var child in Model)
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Отчество</th>
+            <th>Дата рождения</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="oi">
+        @if (Model != null)
         {
+            int i = 0;
+            foreach (var child in Model)
+            {
+                <tr>
+                    @*<input type="hidden" class="form-control" asp-for="child.id">*@
+                    <td>
+                        <input type="text" class="form-control" asp-for="child.name" value="@child.name" />
+                    </td>
 
-            <input type="hidden" class="form-control" asp-for="child.id">
-            <tr>
-                <td>
-                    <input type="text" class="form-control" asp-for="child.name" value="@child.name" />
-                </td>
+                    <td>
+                        <input type="text" class="form-control" asp-for="child.surname" value="@child.surname" />
+                    </td>
 
-                <td>
-                    <input type="text" class="form-control" asp-for="child.surname" value="@child.surname" />
-                </td>
+                    <td>
+                        <input type="text" class="form-control" id="dob" asp-for="child.patronymic" value="@child.patronymic" />
+                    </td>
 
-                <td>
-                    <input type="text" class="form-control" id="dob" asp-for="child.patronymic" value="@child.patronymic" />
-                </td>
+                    <td>
+                        <input type="date" class="form-control" id="dob" asp-for="child.dob" value="@child.dob" />
+                    </td>
 
-                <td>
-                    <input type="date" class="form-control" id="dob" asp-for="child.dob" value="@child.dob" />
-                </td>
-            </tr>
-            i++;
+                    <td>
+                        <input type="button" class="form-control" id="delete" data-id="@child.id" value="Del"/>
+                    </td>
+
+                </tr>
+                i++;
+            }
         }
-    }
-</tbody>
+    </tbody>
+</table>

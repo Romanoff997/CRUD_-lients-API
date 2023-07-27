@@ -10,6 +10,10 @@ namespace CRUD_Сlients_API.Helpers
         {
             session.SetString(key, converter.WriteJson<T>(value));
         }
+        public static bool Contains(this ISession session, string key)
+        {
+            return session.Keys.Contains(key);
+        }
 
         public static T Get<T>(this ISession session, string key, IJsonConverter converter)
         {

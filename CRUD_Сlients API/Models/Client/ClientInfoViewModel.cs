@@ -39,7 +39,7 @@ namespace CRUD_Сlients_API.Models.Client
         public IEnumerable<Child>? children { get; set; }
        // public string[]? documentIds { get; set; }
         //[Required]
-        //public PassportModel? passport { get; set; }
+        public PassportModel? passport { get; set; }
         //////[Required]
         //public LivingAddressModel livingAddress { get; set; }
         ////[Required]

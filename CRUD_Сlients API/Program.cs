@@ -1,10 +1,13 @@
+using CRUD_Ñlients_API.Controllers;
 using CRUD_Ñlients_API.Middleware;
 using CRUD_Ñlients_API.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<ClientController>();
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
 //builder.Services.AddSingleton<JsonNewtonConverter>(new JsonNewtonConverter());
 builder.Services.AddSingleton<IJsonConverter>(provider => {

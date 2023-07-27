@@ -62,9 +62,10 @@ namespace CRUD_Сlients_API.Controllers
             //    surname = chil.surname,
             //    patronymic = chil.patronymic,
             //    id = new Guid()
-            //});
+            //});e
             return View("Create", currClient);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateClient(ClientInfoViewModel client)
         {
