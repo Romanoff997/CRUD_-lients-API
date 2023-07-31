@@ -70,13 +70,13 @@ namespace CRUD_Сlients_API.Controllers
         public async Task<IActionResult> CreateClient(ClientInfoViewModel client)
         {
             currClient = client;
-            await servcie.CreateClient(() =>
-             {
+            //await servcie.CreateClient(() =>
+            // {
 
 
-             }, currClient);
+            // }, currClient);
 
-            return Redirect("/");
+            return Index();//RedirectToAction("Index");
         }
 
         [HttpGet]

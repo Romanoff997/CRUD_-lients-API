@@ -1,6 +1,5 @@
 ﻿@using CRUD_Сlients_API.Models.Client;
-
-@model IEnumerable<Child>
+@model List<Child>
 
 <table class="table">
     <thead>
@@ -15,33 +14,32 @@
     <tbody id="oi">
         @if (Model != null)
         {
-            int i = 0;
-            foreach (var child in Model)
+            for (int i = 0; i < Model.Count; i++)
+            //foreach(var child in Model)
             {
                 <tr>
                     @*<input type="hidden" class="form-control" asp-for="child.id">*@
                     <td>
-                        <input type="text" class="form-control" asp-for="child.name" value="@child.name" />
+                        <input type="text" class="form-control" asp-for="@Model[i].name" />
                     </td>
 
                     <td>
-                        <input type="text" class="form-control" asp-for="child.surname" value="@child.surname" />
+                        <input type="text" class="form-control" asp-for="@Model[i].surname" />
                     </td>
 
                     <td>
-                        <input type="text" class="form-control" id="dob" asp-for="child.patronymic" value="@child.patronymic" />
+                        <input type="text" class="form-control" asp-for="@Model[i].patronymic" />
                     </td>
 
                     <td>
-                        <input type="date" class="form-control" id="dob" asp-for="child.dob" value="@child.dob" />
+                        <input type="date" class="form-control" asp-for="@Model[i].dob" />
                     </td>
 
                     <td>
-                        <input type="button" class="form-control" id="delete" data-id="@child.id" value="Del"/>
+                        <input type="button" class="form-control" id="delete" data-id="@Model[i].id" value="Del" />
                     </td>
 
                 </tr>
-                i++;
             }
         }
     </tbody>

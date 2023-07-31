@@ -36,27 +36,27 @@ namespace CRUD_Сlients_API.Models.Client
 
         [Display(Name = "День рождения")]
         public DateTime dob { get; set; }
-        public IEnumerable<Child>? children { get; set; }
-       // public string[]? documentIds { get; set; }
+        public List<Child>? children { get; set; } = new();
+        public string[]? documentIds { get; set; }
         //[Required]
-        public PassportModel? passport { get; set; }
+        public PassportModel? passport { get; set; } = new();
         //////[Required]
-        //public LivingAddressModel livingAddress { get; set; }
+        public LivingAddressModel livingAddress { get; set; }
         ////[Required]
-        //public RegAddressModel regAddress { get; set; }
+        public RegAddressModel? regAddress { get; set; }
 
-        //public string[]? jobs { get; set; }
+        public string[]? jobs { get; set; }
 
         public int? curWorkExp { get; set; }
         public string? typeEducation { get; set; }
         public float? monIncome { get; set; }
         public float? monExpenses { get; set; }
-        //public string[]? communications { get; set; }
+        public string[]? communications { get; set; }
 
         [Display(Name = "Дата изменения")]
-        public DateTime createdAt { get; set; }
+        public DateTime createdAt { get; set; } = DateTime.Now;
 
         [Display(Name = "Дата последнего изменеия")]
-        public DateTime updatedAt { get; set; }
+        public DateTime updatedAt { get; set; } = DateTime.Now;
     }
 }

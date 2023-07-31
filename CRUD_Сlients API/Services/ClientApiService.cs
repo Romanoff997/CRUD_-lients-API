@@ -130,11 +130,11 @@ namespace CRUD_Сlients_API.Services
                     dob = DateTime.Now,
                     updatedAt = DateTime.Now,
                     createdAt = DateTime.Now,
-                    curWorkExp = 12,
-                    monExpenses = 0,
-                    monIncome = 23,
-                    patronymic = "dfsdf",
-                    typeEducation = "sdfsdf"
+                    //curWorkExp = 12,
+                    //monExpenses = 0,
+                    //monIncome = 23,
+                    //patronymic = "dfsdf",
+                    //typeEducation = "sdfsdf"
                 };
                 string urlWithParameters = $"{url}clients/{currClient.id}/";
 

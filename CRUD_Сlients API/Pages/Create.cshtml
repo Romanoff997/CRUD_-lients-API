@@ -1,61 +1,57 @@
 ﻿@page
+@model CRUD_Сlients_API.Pages.CreateModel
 @using CRUD_Сlients_API.Helpers;
 @using CRUD_Сlients_API.Pages;
 @using CRUD_Сlients_API.Models.Client;
 @using CRUD_Сlients_API.Services;
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @inject IJsonConverter _converter
-@model Create
 @{
 
     ViewBag.Title = "Create client";
     Layout = "_Layout";
-    var children = CRUD_Сlients_API.Helpers.SessionExtensions.Get<List<Child>>(HttpContext.Session, "children", _converter);
-    if (children != null)
-        Model.currClient.children = children;
-
-
+    Model.currClient.children = CRUD_Сlients_API.Helpers.SessionExtensions.Get<List<Child>>(HttpContext.Session, "children", _converter);
 }
 
 <h2>Добавление нового клиента</h2>
 
-<form method="post" id="myForm">
+<form method="post">
     @*<input type="hidden" name="handler" value="Test" />
     <div asp-validation-summary="ModelOnly"></div>
     <span asp-validation-for="Email"></span>*@
     <div class="form-group">
         <label asp-for="currClient.name">Имя:</label>
-        <input asp-for="currClient.name" type="text"  class="form-control" id="name">
+        <input asp-for="currClient.name" type="text" class="form-control">
     </div>
     <div class="form-group">
         <label asp-for="currClient.surname">Фамилия:</label>
-        <input asp-for="currClient.surname" type="text" class="form-control" id="surname">
+        <input asp-for="currClient.surname" type="text" class="form-control">
     </div>
     <div class="form-group">
         <label asp-for="currClient.patronymic">Отчество:</label>
-        <input type="text" class="form-control" id="patronymic" asp-for="currClient.dob">
+        <input asp-for="currClient.patronymic" type="text" class="form-control" >
     </div>
     <div class="form-group">
         <label asp-for="currClient.dob">Дата рождения:</label>
-        <input type="date" class="form-control" id="dob" asp-for="currClient.dob">
+        <input type="date" class="form-control" asp-for="currClient.dob">
     </div>
-    
+
     <h3>Паспорт</h3>
     <div class="form-group">
-        <label asp-for="currClient.passport.number" >Номер:</label>
-        <input type="number" class="form-control" id="dob" asp-for="currClient.passport.number">
-    </div>    
+        <label asp-for="currClient.passport.number">Номер:</label>
+        <input type="number" class="form-control" asp-for="currClient.passport.number">
+    </div>
     <div class="form-group">
         <label asp-for="currClient.passport.series">Серия</label>
-        <input type="number" class="form-control" id="dob" asp-for="currClient.passport.series">
-    </div> 
+        <input type="number" class="form-control" asp-for="currClient.passport.series">
+    </div>
     <div class="form-group">
         <label asp-for="currClient.passport.giver">Выдано</label>
-        <input type="text" class="form-control" id="dob" asp-for="currClient.passport.giver">
-    </div> 
+        <input type="text" class="form-control" asp-for="currClient.passport.giver">
+    </div>
     <div class="form-group">
         <label asp-for="currClient.passport.dateIssued">Дата выдачи</label>
-        <input type="date" class="form-control" id="dob" asp-for="currClient.passport.dateIssued">
+        <input type="date" class="form-control" asp-for="currClient.passport.dateIssued">
     </div>
 
     <h3>Дети</h3>
@@ -63,51 +59,71 @@
         <input type="text" class="form-control" id="childName" placeholder="Имя">
         <input type="text" class="form-control" id="childSurname" placeholder="Фамилия">
         <input type="text" class="form-control" id="childPatronymic" placeholder="Отчество">
-        <input type="date" class="form-control" id="childDob"><
+        <input type="date" class="form-control" id="childDob">
         <button type="button" class="btn btn-primary add-child-btn">Добавить</button>
     </div>
 
     <div id="listContainer">
         @Html.Partial("ChildrenPartial", Model.currClient.children)
+        @*<table class="table">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="oi">
+                @if (Model.currClient.children!=null)
+                {
+                    for (int i=0;i<Model.currClient.children.Count ;i++)
+                    {
+                        <tr>
+                            @*<input type="hidden" class="form-control" asp-for="child.id">
+                            <td>
+                                <input type="text" class="form-control" asp-for="currClient.children[i].name" />
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" asp-for="currClient.children[i].surname" />
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" asp-for="currClient.children[i].patronymic" />
+                            </td>
+
+                            <td>
+                                <input type="date" class="form-control" asp-for="currClient.children[i].dob" />
+                            </td>
+
+                            <td>
+                                <input type="button" class="form-control" id="delete" data-id="@Model.currClient.children[i].id" value="Del" />
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>*@
+        
+
     </div>
-    
-    @*Html.AntiForgeryToken()*@
-    <input type="button" class="btn btn-primary create-client-btn" id="create" value="Create" />
+
+    @Html.AntiForgeryToken()
+    <input type="submit" class="btn btn-primary" value="Create" />
 </form>
 
 @section scripts {
-    @*Html.AntiForgeryToken();*@
     <script>
         $(function () {
-            $('.create-client-btn').click(function () {
-                var token = "@Xsrf.GetAndStoreTokens(HttpContext).RequestToken";
-                alert("Send!");
-                alert("@Model.currClient.name");
-                $.ajax({
-                    type: "POST",
-                    headers: {
-                        "RequestVerificationToken": token
-                    },
-                    url: "/Create", 
-                    data: {
-                        name: "@Model.currClient.name",
-                        surname: "Model.currClient.surname"
-                        //children: "Model.currClient.children"
-                    },
-                    success: function (result) {
 
-                    },
-                    error: function (request, error) {
-                        console.log(arguments);
-                        alert(" Can't do because: " + error);
-                    },
-
-                });
-            });
             // Обработчик клика на кнопку "Добавить"
             $('.add-child-btn').click(function () {
                 var token = "@Xsrf.GetAndStoreTokens(HttpContext).RequestToken";
-                alert("@Model.currClient.name");
+                var tezt = "@Model.currClient.name";
+                alert(tezt);
                 $.ajax({
                     type: "GET",
                     headers: {
@@ -133,10 +149,9 @@
                     },
 
                 });
-             });
+            });
 
-            function ChildrenUpdate(list)
-            {
+            function ChildrenUpdate(list) {
                 $('#listContainer').empty().append(list);
             }
 
@@ -163,7 +178,7 @@
                     },
 
                 });
-                
+
             });
         });
     </script>
