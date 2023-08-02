@@ -6,23 +6,37 @@ using CRUD_Сlients_API.Models.Client;
 using System.Text;
 using System;
 using System.Collections.Generic;
+using CRUD_Сlients_API.Models.Pager;
 
 namespace CRUD_Сlients_API.Controllers
 {
     public class ClientController : Controller
     {
 
-        private readonly ClientApiService servcie;
+        private readonly ClientApiService _servcie;
         static private ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
         static private ClientInfoViewModel currClient = new ClientInfoViewModel();
-        public ClientController()
+        public ClientController(ClientApiService service)
         {
-            servcie = new ClientApiService((object df, ErrorClientResponseModel fdf) => { }, new JsonNewtonConverter());
+            _servcie = service;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int pg=1)
         {
+            if (requestGetClients.data.Count>0)
+            {
+                const int pageSize = 5;
+                if (pg < 1)
+                    pg = 1;
+                int recsCount = requestGetClients.data.Count;
+                var pager = new Pager(recsCount, pg, pageSize);
+                int recSkip = (pg - 1) * pageSize;
+                var data = requestGetClients.data.Skip(recSkip).Take(pager.PageSize).ToList();
+                ViewBag.Pager = pager;
+                requestGetClients.dataPager = data;
+
+            }
             return View("Index", requestGetClients);
         }
 
@@ -31,7 +45,7 @@ namespace CRUD_Сlients_API.Controllers
         public async Task<IActionResult> GetClients(ClientRequestViewModel form)
         {
 
-            await servcie.GetClinets((Response<ClientResponseModel> result) =>
+            await _servcie.GetClinets((Response<ClientResponseModel> result) =>
             {
                 requestGetClients = new ClientRequestViewModel
                 {
@@ -47,43 +61,23 @@ namespace CRUD_Сlients_API.Controllers
         {
             return RedirectToPage("/Create");
         }
-        [HttpPost]
-        public IActionResult AddChild(Child chil)
-        {
-            //children.Add(new Child() { 
-            //dob=client.dob,
-            //surname=client.surname,
-            //patronymic=client.patronymic,   
-            //id=new Guid()
-            //});
-            //currClient.children.Add(new Child()
-            //{
-            //    dob = chil.dob,
-            //    surname = chil.surname,
-            //    patronymic = chil.patronymic,
-            //    id = new Guid()
-            //});e
-            return View("Create", currClient);
-        }
 
         [HttpPost]
         public async Task<IActionResult> CreateClient(ClientInfoViewModel client)
         {
-            currClient = client;
-            //await servcie.CreateClient(() =>
-            // {
+            await _servcie.CreateClient(() =>
+            {
 
+            }, client);
 
-            // }, currClient);
-
-            return Index();//RedirectToAction("Index");
+            return Index();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetClinet(Guid id)
         {
             ClientInfoViewModel client = new ClientInfoViewModel();
-            await servcie.GetClinet((ClientInfoViewModel _client) =>
+            await _servcie.GetClinet((ClientInfoViewModel _client) =>
             {
                 currClient = _client;
             }, id);
@@ -99,7 +93,7 @@ namespace CRUD_Сlients_API.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateClient(ClientInfoViewModel client)
         {
-            await servcie.UpdateClinet(() =>
+            await _servcie.UpdateClinet(() =>
             {
 
             }, client);
@@ -110,7 +104,7 @@ namespace CRUD_Сlients_API.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteClient(Guid id)
         {
-            await servcie.DeleteClinet(() => 
+            await _servcie.DeleteClinet(() => 
             { 
             
             },id);
@@ -120,7 +114,7 @@ namespace CRUD_Сlients_API.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexRefresh()
         {
-            await servcie.GetClinets((Response<ClientResponseModel> result) =>
+            await _servcie.GetClinets((Response<ClientResponseModel> result) =>
             {
                 requestGetClients = new ClientRequestViewModel
                 {
@@ -131,9 +125,5 @@ namespace CRUD_Сlients_API.Controllers
             return Index();
         }
         
-
-
-
-
     }
 }

@@ -5,7 +5,8 @@ namespace CRUD_Сlients_API.Models
 {
     public class ClientRequestViewModel
     {
-        public List<ClientInfoViewModel>? data { get; set; } = new List<ClientInfoViewModel>();
+        public List<ClientInfoViewModel>? data { get; set; } = new List<ClientInfoViewModel>();   
+        public List<ClientInfoViewModel>? dataPager { get; set; } = new List<ClientInfoViewModel>();
         public ClientRequestModel? request { get; set; } = new ClientRequestModel();
     }
     public class ClientRequestModel

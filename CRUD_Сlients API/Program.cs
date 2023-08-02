@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(); 
 builder.Services.AddTransient<ClientController>();
+builder.Services.AddTransient<ClientApiService>();
 builder.Services.AddAntiforgery(options => options.HeaderName = "RequestVerificationToken");
-//builder.Services.AddSingleton<JsonNewtonConverter>(new JsonNewtonConverter());
 builder.Services.AddSingleton<IJsonConverter>(provider => {
 
     return new JsonNewtonConverter();

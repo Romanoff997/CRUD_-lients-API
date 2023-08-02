@@ -18,11 +18,10 @@ namespace CRUD_Сlients_API.Services
     public class ClientApiService
     {
         private const string url = "https://localhost:7113/api/";
-        private readonly EventHandler<ErrorClientResponseModel> ErrorHandler;
+        public event EventHandler<ErrorClientResponseModel> ErrorHandler;
         private readonly IJsonConverter _converter;
-        public ClientApiService(EventHandler<ErrorClientResponseModel> errorHandler, IJsonConverter converter)
+        public ClientApiService(IJsonConverter converter)
         {
-            ErrorHandler += errorHandler;
             _converter = converter;
         }
         public async Task GetClinets(Action<Response<ClientResponseModel>> GetClinet, ClientRequestModel clientQuery)
@@ -31,11 +30,6 @@ namespace CRUD_Сlients_API.Services
             {
                 var parameters = new Dictionary<string, string>
                     {
-                        //{ "sortBy", "createdAt" },
-                        //{ "sortDir",  "asc"},
-                        //{ "limit", "10" },
-                        //{ "page",  "0" },
-                        //{ "search",  "" }
                         { "sortBy", clientQuery.sortBy },
                         { "sortDir", clientQuery.sortDir},
                         { "limit", clientQuery.limit.ToString() },
@@ -68,7 +62,7 @@ namespace CRUD_Сlients_API.Services
             }
 
         }
-        public async Task CreateClient(Action CreateClinet, ClientInfoViewModel currClient)
+        public async Task CreateClient(Action CreateClinet, ClientInfoViewModel clientInfo)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -77,7 +71,7 @@ namespace CRUD_Сlients_API.Services
 
                 var request = new HttpRequestMessage(HttpMethod.Post, $"{url}clients")
                 {
-                    Content = new StringContent(_converter.WriteJson(currClient), Encoding.UTF8, "application/json")
+                    Content = new StringContent(_converter.WriteJson(clientInfo), Encoding.UTF8, "application/json")
                 };
 
                 var response = await client.SendAsync(request);
@@ -118,27 +112,14 @@ namespace CRUD_Сlients_API.Services
             }
             
         }
-        public async Task UpdateClinet(Action UpdateClinet, ClientInfoViewModel currClient)
+        public async Task UpdateClinet(Action UpdateClinet, ClientInfoViewModel clientInfo)
         {
             using (HttpClient client = new HttpClient())
             {
-                ClientInfoViewModel currClient2 = new ClientInfoViewModel()
-                {
-                    name = "dfsd",
-                    surname = "dsfsd",
-                    id = currClient.id,
-                    dob = DateTime.Now,
-                    updatedAt = DateTime.Now,
-                    createdAt = DateTime.Now,
-                    //curWorkExp = 12,
-                    //monExpenses = 0,
-                    //monIncome = 23,
-                    //patronymic = "dfsdf",
-                    //typeEducation = "sdfsdf"
-                };
-                string urlWithParameters = $"{url}clients/{currClient.id}/";
 
-                HttpContent content = new StringContent(_converter.WriteJson(currClient2), Encoding.UTF8, "application/json");
+                string urlWithParameters = $"{url}clients/{clientInfo.id}/";
+
+                HttpContent content = new StringContent(_converter.WriteJson(clientInfo), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PutAsync(urlWithParameters, content);
                 string responseBody;
 

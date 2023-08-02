@@ -1,12 +1,19 @@
 ﻿@using CRUD_Сlients_API.Models.Client;
 @using CRUD_Сlients_API.Models;
-
+@using CRUD_Сlients_API.Models.Pager;
 @model ClientRequestViewModel
 @{
-    string strTitle = "";
+    string strTitle = "Index";
     ViewBag.Title = strTitle;
-}
 
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
 <div>
     <a asp-action="CreateClient" asp-controller="Client">Add Client</a></br>
 
@@ -51,9 +58,7 @@
         </div>
         </div>
     </form>
-        @*        @if (Model.Any())
-        {
-*@
+
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
 
@@ -72,8 +77,8 @@
                 </thead>
 
                 <tbody>
-                    @if (Model.data.Count>0)
-                        foreach (var emp in Model.data)
+                    @if (Model.dataPager.Count>0)
+                    foreach (var emp in Model.dataPager)
                         {
                             <tr>
                                 <td>
@@ -93,9 +98,10 @@
                         }
                 </tbody>
 
-                </table>
-            </div>
+            </table>
+        </div>
       
+    <partial name="_Pager" model ="@pager"/>
       
     </div>
 

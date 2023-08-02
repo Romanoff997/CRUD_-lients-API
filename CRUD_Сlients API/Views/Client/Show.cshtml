@@ -2,20 +2,14 @@
 
 @model ClientInfoViewModel
 @{
-    string strTitle = "";
+    string strTitle = "Details";
     ViewBag.Title = strTitle;
-}
-@{
-    ViewBag.Title = "Details";
-}
+ }
 <h2>Details</h2>
-
-@*<form asp-controller="Client" method="post" asp-action="Edit">*@
 
     <h2>@strTitle</h2>
     <div>
         <div class="div-box">
-            @*<a asp-action="AddLinkForm">Add Link</a>*@
 
             <dl class="dl-horizontal">
                 <dt>
@@ -36,28 +30,12 @@
                 <dt>
                     @Html.DisplayFor(model => model.updatedAt)
                 </dt>
-                @* <dt>
-                @Html.DisplayNameFor(model => model.Company)
-                </dt>
-                <dt>
-                @Html.DisplayFor(model => model.Company)
-                </dt>
-                <dt>
-                @Html.DisplayNameFor(model => model.Department)
-                </dt>
-                <dt>
-                @Html.DisplayFor(model => model.Department)
-                </dt>*@
 
             </dl>
-@*            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-success" />
-            </div>*@
 
 
         </div>
     </div>
-@*</form>*@
 
 <div>
     <a asp-action="Edit">Update</a><br />

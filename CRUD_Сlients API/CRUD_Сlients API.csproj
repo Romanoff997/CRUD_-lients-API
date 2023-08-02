@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Shared\**" />
+    <Content Remove="Pages\Shared\**" />
+    <EmbeddedResource Remove="Pages\Shared\**" />
+    <None Remove="Pages\Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Models\ClientErrorModel.cs" />
     <Compile Remove="Models\ClientInfoViewModel.cs" />
     <Compile Remove="Models\ClinetInfoModel.cs" />
@@ -23,8 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Shared\_Layout.cshtml" />
-    <None Include="Pages\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
   </ItemGroup>
 

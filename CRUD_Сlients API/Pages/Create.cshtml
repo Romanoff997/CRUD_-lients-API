@@ -7,13 +7,12 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @inject IJsonConverter _converter
 @{
-
-    ViewBag.Title = "Create client";
-    Layout = "_Layout";
+    string strTitle = "Create client";
+    ViewBag.Title = strTitle;
     Model.currClient.children = CRUD_Сlients_API.Helpers.SessionExtensions.Get<List<Child>>(HttpContext.Session, "children", _converter);
 }
 
-<h2>Добавление нового клиента</h2>
+<h2>@strTitle</h2>
 
 <form method="post">
     @*<input type="hidden" name="handler" value="Test" />
