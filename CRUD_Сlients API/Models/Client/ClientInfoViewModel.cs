@@ -22,28 +22,32 @@ namespace CRUD_Сlients_API.Models.Client
 
     public class ClientInfoViewModel
     {
-        //[Required]
         public Guid id { get; set; }
-        // [Required]
+        [Required]
         [Display(Name = "Имя")]
-        public string? name { get; set; }
-        //[Required]
+        public string name { get; set; }
+        [Required]
         [Display(Name = "Фамилия")]
         public string? surname { get; set; }
-        //[Required]
+        [Required]
         [Display(Name = "Отчество")]
         public string? patronymic { get; set; }
 
         [Display(Name = "День рождения")]
         public DateTime dob { get; set; }
+        [Display(Name = "Дети")]
         public List<Child>? children { get; set; } = new();
+
         public string[]? documentIds { get; set; }
-        //[Required]
-        public PassportModel? passport { get; set; } = new();
-        //////[Required]
-        public LivingAddressModel livingAddress { get; set; }
-        ////[Required]
-        public RegAddressModel? regAddress { get; set; }
+
+        [Display(Name = "Паспорт")]
+        public PassportModel passport { get; set; } = new();
+
+        [Display(Name = "Адрес проживания")]
+        public LivingAddressModel livingAddress { get; set; } = new();
+  
+        [Display(Name = "Адрес регистарции")]
+        public RegAddressModel regAddress { get; set; } = new();
 
         public string[]? jobs { get; set; }
 

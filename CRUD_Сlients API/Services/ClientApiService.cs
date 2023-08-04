@@ -18,7 +18,7 @@ namespace CRUD_Сlients_API.Services
     public class ClientApiService
     {
         private const string url = "https://localhost:7113/api/";
-        public event EventHandler<ErrorClientResponseModel> ErrorHandler;
+        public event EventHandler<string> ErrorHandler;
         private readonly IJsonConverter _converter;
         public ClientApiService(IJsonConverter converter)
         {
@@ -31,7 +31,7 @@ namespace CRUD_Сlients_API.Services
                 var parameters = new Dictionary<string, string>
                     {
                         { "sortBy", clientQuery.sortBy },
-                        { "sortDir", clientQuery.sortDir},
+                        { "sortDir", clientQuery.sortDir.ToString()},
                         { "limit", clientQuery.limit.ToString() },
                         { "page",  clientQuery.page.ToString() },
                         { "search",  clientQuery.search },
@@ -56,7 +56,8 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    ErrorHandler?.Invoke(this, responseBody);
 
                 }
             }
@@ -75,17 +76,18 @@ namespace CRUD_Сlients_API.Services
                 };
 
                 var response = await client.SendAsync(request);
-
+                string responseBody;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseBody = await response.Content.ReadAsStringAsync();
+                    responseBody = await response.Content.ReadAsStringAsync();
                     CreateClinet?.Invoke();
 
                 }
                 else
                 {
-                    
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    ErrorHandler?.Invoke(this, responseBody);
                 }
                 
             }
@@ -107,7 +109,8 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    ErrorHandler?.Invoke(this, responseBody);
                 }
             }
             
@@ -130,7 +133,8 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    ErrorHandler?.Invoke(this, responseBody);
                 }
             }
         }
@@ -152,7 +156,8 @@ namespace CRUD_Сlients_API.Services
                 }
                 else
                 {
-
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    ErrorHandler?.Invoke(this, responseBody);
                 }
             }
         }

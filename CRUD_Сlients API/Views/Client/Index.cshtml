@@ -15,39 +15,35 @@
     }
 }
 <div>
-    <a asp-action="CreateClient" asp-controller="Client">Add Client</a></br>
+    <a asp-action="CreateClient" asp-controller="Client" class="btn">Add Client</a>
 
     <form asp-controller="Client" method="post" asp-action="GetClients">
 
         <h2>@strTitle</h2>
-        <div>
-            <div class="div-box">
-                @*<a asp-action="AddLinkForm">Add Link</a>*@
-            
 
-        
+        <div class="div-box">
             <div class="form-group">
-                <label class="control-label">sortBy</label>
-                    @*<input type="text" name="sortBy" class="form-control" placeholder="@Model.request.">*@
-                    <input asp-for="request.sortBy" class="form-control" />
+                <label asp-for="request.sortBy" class="control-label"></label>
+                <input asp-for="request.sortBy" class="form-control" type="text" value="@Model.request.sortBy" />
+                <span asp-validation-for="request.sortBy" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label class="control-label">sortDir</label>
-                    @*<input type="text" name="sortDir" class="form-control" placeholder="@Model.request.">*@
-                    <input asp-for="request.sortDir" class="form-control" value="@Model.request.sortDir" />
+                <label asp-for="request.sortDir" class="control-label"></label> 
+                <select asp-for="request.sortDir" asp-items="@Model.sortDirList" class="form-control" ></select>
+                <span asp-validation-for="request.sortDir" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label class="control-label">limit</label>
-                @*<input type="number" name="limit" class="form-control" placeholder="">*@
-                    <input asp-for="request.limit" class="form-control" placeholder="@Model.request.limit" />
+                <label asp-for="request.limit" class="control-label"></label>
+                <input asp-for="request.limit" class="form-control" type="text" value="@Model.request.limit" />
+                <span asp-validation-for="request.limit" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label class="control-label">page</label>
-                @*<input type="number" name="page" class="form-control" placeholder="">*@
-                    <input asp-for="request.page" class="form-control" placeholder="@Model.request.page" />
+                <label asp-for="request.page" class="control-label"></label>
+                <input asp-for="request.page" class="form-control" type="text" value="@Model.request.page" />
+                <span asp-validation-for="request.page" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -55,7 +51,6 @@
             </div>
 
        
-        </div>
         </div>
     </form>
 
@@ -68,17 +63,17 @@
                             @Html.DisplayNameFor(Model=>Model.data[0].name)
                         </th>
                         <th>
-                        @Html.DisplayNameFor(Model=>Model.data[0].surname)
+                            @Html.DisplayNameFor(Model=>Model.data[0].surname)
                         </th>
                         <th>
-                        @Html.DisplayNameFor(Model=>Model.data[0].createdAt)
+                            @Html.DisplayNameFor(Model=>Model.data[0].createdAt)
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @if (Model.dataPager.Count>0)
-                    foreach (var emp in Model.dataPager)
+                        foreach (var emp in Model.dataPager)
                         {
                             <tr>
                                 <td>

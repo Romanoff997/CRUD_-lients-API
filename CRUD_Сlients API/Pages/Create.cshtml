@@ -14,43 +14,49 @@
 
 <h2>@strTitle</h2>
 
+
 <form method="post">
-    @*<input type="hidden" name="handler" value="Test" />
-    <div asp-validation-summary="ModelOnly"></div>
-    <span asp-validation-for="Email"></span>*@
     <div class="form-group">
-        <label asp-for="currClient.name">Имя:</label>
+        <label asp-for="currClient.name" class="control-label"> </label>
         <input asp-for="currClient.name" type="text" class="form-control">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="currClient.surname">Фамилия:</label>
+        <label asp-for="currClient.surname" class="control-label"> </label>
         <input asp-for="currClient.surname" type="text" class="form-control">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="currClient.patronymic">Отчество:</label>
+        <label asp-for="currClient.patronymic" class="control-label"> </label>
         <input asp-for="currClient.patronymic" type="text" class="form-control" >
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="currClient.dob">Дата рождения:</label>
+        <label asp-for="currClient.dob" class="control-label"> </label>
         <input type="date" class="form-control" asp-for="currClient.dob">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
 
     <h3>Паспорт</h3>
     <div class="form-group">
         <label asp-for="currClient.passport.number">Номер:</label>
         <input type="number" class="form-control" asp-for="currClient.passport.number">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="currClient.passport.series">Серия</label>
         <input type="number" class="form-control" asp-for="currClient.passport.series">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="currClient.passport.giver">Выдано</label>
         <input type="text" class="form-control" asp-for="currClient.passport.giver">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="currClient.passport.dateIssued">Дата выдачи</label>
         <input type="date" class="form-control" asp-for="currClient.passport.dateIssued">
+        <span asp-validation-for="currClient.name" class="text-danger"></span>
     </div>
 
     <h3>Дети</h3>
@@ -64,50 +70,6 @@
 
     <div id="listContainer">
         @Html.Partial("ChildrenPartial", Model.currClient.children)
-        @*<table class="table">
-            <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Фамилия</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="oi">
-                @if (Model.currClient.children!=null)
-                {
-                    for (int i=0;i<Model.currClient.children.Count ;i++)
-                    {
-                        <tr>
-                            @*<input type="hidden" class="form-control" asp-for="child.id">
-                            <td>
-                                <input type="text" class="form-control" asp-for="currClient.children[i].name" />
-                            </td>
-
-                            <td>
-                                <input type="text" class="form-control" asp-for="currClient.children[i].surname" />
-                            </td>
-
-                            <td>
-                                <input type="text" class="form-control" asp-for="currClient.children[i].patronymic" />
-                            </td>
-
-                            <td>
-                                <input type="date" class="form-control" asp-for="currClient.children[i].dob" />
-                            </td>
-
-                            <td>
-                                <input type="button" class="form-control" id="delete" data-id="@Model.currClient.children[i].id" value="Del" />
-                            </td>
-
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>*@
-        
-
     </div>
 
     @Html.AntiForgeryToken()

@@ -7,6 +7,7 @@ using System.Text;
 using System;
 using System.Collections.Generic;
 using CRUD_Сlients_API.Models.Pager;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CRUD_Сlients_API.Controllers
 {
@@ -14,11 +15,12 @@ namespace CRUD_Сlients_API.Controllers
     {
 
         private readonly ClientApiService _servcie;
-        static private ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
-        static private ClientInfoViewModel currClient = new ClientInfoViewModel();
+        private static ClientRequestViewModel requestGetClients = new ClientRequestViewModel();
+        private static ClientInfoViewModel currClient = new ClientInfoViewModel();
         public ClientController(ClientApiService service)
         {
             _servcie = service;
+            _servcie.ErrorHandler += ServerErrorException;
         }
 
         [HttpGet]
@@ -123,6 +125,12 @@ namespace CRUD_Сlients_API.Controllers
                 };
             }, requestGetClients.request);
             return Index();
+        }
+
+        public void ServerErrorException(object obj, string message)
+        {
+            ViewBag.success = false;
+            ViewBag.errorMessage = message != null? message: "Ошибка сервера";
         }
         
     }
